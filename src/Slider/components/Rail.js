@@ -31,7 +31,7 @@ const Rail = ({range}) => {
               <Text
                 style={{
                   position: 'absolute',
-                  width: 45,
+                  width: 60,
                   marginLeft: -5,
                   top: -50,
                   fontWeight: '600',

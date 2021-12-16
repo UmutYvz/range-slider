@@ -26,8 +26,8 @@ const RangeSlider = ({range, floatingLabel = false, setPersantage}) => {
     [],
   ); // sürüklenen yoldaki çizgi
   const renderRailSelected = useCallback(() => <RailSelected />, []); // seçili olan kısmı gösteriyor
-  const renderLabel = useCallback(value => <Label text={value} />, []); // kaydırırken kaç olduğunu göstermek için
-  const renderNotch = useCallback(() => <Notch />, []); // basılı tutunca üstünde baloncuk ve arasındaki component
+  // const renderLabel = useCallback(value => <Label text={value} />, []); // kaydırırken kaç olduğunu göstermek için
+  // const renderNotch = useCallback(() => <Notch />, []); // basılı tutunca üstünde baloncuk ve arasındaki component
   const handleValueChange = useCallback((low, high) => {
     // Slider için low değeri kullanılabilir , range slider için ikiside
     range ? setPersantage(high - low) : setPersantage(low);
