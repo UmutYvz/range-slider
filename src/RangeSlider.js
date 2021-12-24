@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 
 import Slider from './Slider/Slider';
@@ -10,7 +10,12 @@ import Label from './Slider/components/Label';
 import ThumbLeft from './Slider/components/ThumbLeft';
 import ThumbRight from './Slider/components/ThumbRight';
 
-const RangeSlider = ({range, floatingLabel = false, setPersantage}) => {
+const RangeSlider = ({
+  range,
+  floatingLabel = false,
+  setPersantage,
+  persangete,
+}) => {
   const [low, setLow] = useState(0); // range slider seçili düşük değer
   const [high, setHigh] = useState(100); // range slider seçili yüksek değer
   const [min, setMin] = useState(0); // slider min değer
@@ -25,9 +30,14 @@ const RangeSlider = ({range, floatingLabel = false, setPersantage}) => {
     () => <Rail range={range ? false : true} />,
     [],
   ); // sürüklenen yoldaki çizgi
-  const renderRailSelected = useCallback(() => <RailSelected />, []); // seçili olan kısmı gösteriyor
-  // const renderLabel = useCallback(value => <Label text={value} />, []); // kaydırırken kaç olduğunu göstermek için
-  // const renderNotch = useCallback(() => <Notch />, []); // basılı tutunca üstünde baloncuk ve arasındaki component
+  const renderRailSelected = useCallback(
+    () => (
+      <RailSelected
+        range={range ? false : true}
+      />
+    ),
+    [],
+  ); // seçili olan kısmı gösteriyor
   const handleValueChange = useCallback((low, high) => {
     // Slider için low değeri kullanılabilir , range slider için ikiside
     range ? setPersantage(high - low) : setPersantage(low);
@@ -35,9 +45,27 @@ const RangeSlider = ({range, floatingLabel = false, setPersantage}) => {
     setHigh(high);
   }, []);
 
+  const [buttonIndex, setButtonIndex] = useState(0);
+
+  useEffect(() => {
+    if (persangete >= 0 && persangete <= 25) {
+      setButtonIndex(0);
+    } else if (persangete >= 25 && persangete <= 50) {
+      setButtonIndex(1);
+    } else if (persangete >= 50 && persangete <= 75) {
+      setButtonIndex(2);
+    } else if (persangete >= 75 && persangete <= 100) {
+      setButtonIndex(3);
+    } else if (persangete === 100) {
+      setButtonIndex(4);
+    }
+  }, [persangete]);
+
   return (
     <View>
       <Slider
+        buttonIndex={buttonIndex}
+        low={low}
         min={min}
         max={max}
         step={1}
@@ -48,8 +76,6 @@ const RangeSlider = ({range, floatingLabel = false, setPersantage}) => {
         renderRightThumb={renderRightThumb}
         renderRail={renderRail}
         renderRailSelected={renderRailSelected}
-        renderLabel={renderLabel}
-        renderNotch={renderNotch}
         onValueChanged={handleValueChange}
       />
     </View>

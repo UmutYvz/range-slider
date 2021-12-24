@@ -9,23 +9,7 @@ const Rail = ({range}) => {
   return (
     <View style={styles.root}>
       {range
-        ? data.map(item => (
-            <View style={styles.dot}>
-              <Text
-                style={{
-                  position: 'absolute',
-                  marginLeft: -3,
-                  marginTop: 28,
-                  width: 30,
-                  zIndex: 999,
-                  fontWeight: '600',
-                  fontSize: 10,
-                  color: 'black',
-                }}>
-                {item}
-              </Text>
-            </View>
-          ))
+        ? null
         : data2.map((item, index) => (
             <View style={styles.dollars}>
               <Text
@@ -56,7 +40,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: 2,
     borderRadius: 2,
-    backgroundColor: 'rgba(137, 146, 163, 1)',
+    backgroundColor: 'rgba(118, 140, 184, 0.32)',
   },
   dot: {
     width: 15,

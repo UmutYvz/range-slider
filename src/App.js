@@ -7,13 +7,17 @@ const App = () => {
   return (
     <View style={styles.container}>
       <View style={{paddingVertical: 50}}>
-        <RangeSlider floatingLabel setPersantage={setPersantage} />
+        <RangeSlider
+          floatingLabel
+          setPersantage={setPersantage}
+          persangete={persangete}
+        />
         <Text style={{marginTop: 50}}>{persangete}</Text>
       </View>
-      <View style={{paddingVertical: 50}}>
+      {/* <View style={{paddingVertical: 50}}>
         <RangeSlider range setPersantage={setPersantage} />
         <Text style={{marginTop: 50}}>{persangete}</Text>
-      </View>
+      </View> */}
     </View>
   );
 };

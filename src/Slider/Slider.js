@@ -6,7 +6,14 @@ import React, {
   useMemo,
   useRef,
 } from 'react';
-import {Animated, PanResponder, View, ViewPropTypes} from 'react-native';
+import {
+  Animated,
+  PanResponder,
+  StyleSheet,
+  View,
+  ViewPropTypes,
+  Text,
+} from 'react-native';
 import PropTypes from 'prop-types';
 
 import styles from './styles';
@@ -41,7 +48,10 @@ const Slider = ({
   renderLabel,
   renderNotch,
   renderRail,
+  dotWidth,
   renderRailSelected,
+  low,
+  buttonIndex,
   ...restProps
 }) => {
   const {inPropsRef, inPropsRefPrev, setLow, setHigh} = useLowHigh(
@@ -108,9 +118,9 @@ const Slider = ({
     }
   }, [highProp, inPropsRefPrev.lowPrev, inPropsRefPrev.highPrev, lowProp]);
 
-  useEffect(() => {
-    updateThumbs();
-  }, [updateThumbs]);
+  // useEffect(() => {
+  //   updateThumbs();
+  // }, [updateThumbs]);
 
   const handleContainerLayout = useWidthLayout(containerWidthRef, updateThumbs);
   const handleThumbLayout = useCallback(
@@ -264,7 +274,130 @@ const Slider = ({
       updateSelectedRail,
     ],
   );
+  const data = [
+    {label: '0%'},
+    {label: '25%'},
+    {label: '50%'},
+    {label: '75%'},
+    {label: '100%'},
+  ];
 
+  // const renderPoints = () => {
+  //   return (
+  //     <View
+  //       style={{
+  //         position: 'absolute',
+  //         top: 0,
+  //         left: 0,
+  //         right: 0,
+  //         bottom: 0,
+  //         flexDirection: 'row',
+  //         justifyContent: 'space-between',
+  //         alignItems: 'center',
+  //       }}>
+  //       {disableRange
+  //         ? data.map((d, index) => {
+  //             console.log(index);
+  //             return (
+  //               <View
+  //                 key={index}
+  //                 style={{
+  //                   width: 15,
+  //                   height: 15,
+  //                   marginLeft: -3,
+  //                   backgroundColor:
+  //                     index <= buttonIndex
+  //                       ? '#3272FE'
+  //                       : 'rgba(118, 140, 184, 0.8)',
+  //                   borderColor: 'white',
+  //                   opacity: 1,
+  //                   borderWidth: 2,
+  //                   borderRadius: 7,
+  //                 }}
+  //               />
+  //             );
+  //           })
+  //         : null}
+  //     </View>
+  //   );
+  // };
+  const renderPoints = () => {
+    return (
+      <View
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginHorizontal: -22,
+        }}>
+        {data.map((d, index) => {
+          console.log(index, buttonIndex);
+          return (
+            <View
+              key={index}
+              style={{
+                height: 75,
+                width: 55,
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
+              <View
+                style={{
+                  opacity: index <= buttonIndex ? 0 : 1,
+                  position: 'absolute',
+                  top: 0,
+                  bottom: 0,
+                  width: '20%',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <View
+                  style={{
+                    backgroundColor: '#1D2A52',
+                    width: '100%',
+                    height: 2,
+                  }}
+                />
+              </View>
+              <View
+                style={{
+                  width: 14,
+                  height: 14,
+                  borderRadius: 7,
+                  borderColor: 'white',
+                  borderWidth: 2,
+                  backgroundColor:
+                    index <= buttonIndex ? '#3272FE' : 'rgba(118, 140, 184, 1)',
+                }}
+              />
+              <View
+                style={{
+                  position: 'absolute',
+                  bottom: 0,
+                  alignItems: 'center',
+                }}>
+                <Text
+                  style={{
+                    fontWeight: '600',
+                    fontSize: 10,
+                    color: 'rgba(118, 140, 184, 1)',
+                    lineHeight: 11,
+                    textAlign: 'center',
+                  }}>
+                  {d.label}
+                </Text>
+              </View>
+            </View>
+          );
+        })}
+      </View>
+    );
+  };
   return (
     <View {...restProps}>
       <View {...labelContainerProps}>
@@ -277,6 +410,7 @@ const Slider = ({
           <Animated.View style={selectedRailStyle}>
             {renderRailSelected()}
           </Animated.View>
+          {disableRange ? renderPoints() : null}
         </View>
         <Animated.View style={lowStyles} onLayout={handleThumbLayout}>
           {lowThumb}
@@ -293,6 +427,28 @@ const Slider = ({
     </View>
   );
 };
+
+const styles2 = StyleSheet.create({
+  dot: {
+    width: 15,
+    height: 15,
+    marginLeft: -3,
+    backgroundColor: 'rgba(118, 140, 184, 0.5)',
+    borderColor: 'white',
+    opacity: 1,
+    borderWidth: 2,
+    borderRadius: 7,
+  },
+  dotPassed: {
+    width: 12,
+    height: 12,
+    marginLeft: -3,
+    backgroundColor: '#3272FE',
+    borderColor: '#3272FE',
+    borderWidth: 1,
+    borderRadius: 50,
+  },
+});
 
 Slider.propTypes = {
   ...ViewPropTypes,
